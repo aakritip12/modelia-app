@@ -1,47 +1,90 @@
-import { DragDrop } from '../commonComponents';
-import { Message } from '../types';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
+import { Message } from '../types'; // Assuming the Message type is defined somewhere
 
-const renderComponent = (item: Message) => {
-  const { date, message } = item || {};
-  return (
-    <div className="bg-transparent">
-      <p className="text-xs text-gray-500">{date}</p>
-      <p className="text-xs font-medium">{message}</p>
-    </div>
-  );
-};
-
-const RenderYear = ({
-  year,
-  listofItems,
-}: {
-  year: string;
-  listofItems: Message[];
-}) => (
-  <div className="flex-1 min-w-[300px] bg-purple-light rounded-lg shadow-lg p-4">
-    <h2 className="text-xl font-semibold mb-4">{year}</h2>
-    <div className="max-h-[300px] overflow-y-auto">
-      <DragDrop
-        listofItems={listofItems}
-        renderTiles={renderComponent}
-        groupId={`${year}`}
-      />
-    </div>
-  </div>
-);
-
-export default RenderYear;
+// Lazy load RenderYear component
+const RenderYear = React.lazy(() => import('./RenderYear'));
 
 const DragDropMessages = ({
   groupedList,
 }: {
   groupedList: Record<string, Message[]>;
-}) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-    {Object.keys(groupedList).map((year) => (
-      <RenderYear key={year} year={year} listofItems={groupedList[year]} />
-    ))}
-  </div>
-);
+}) => {
+  const [visibleYears, setVisibleYears] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [allYearsLoaded, setAllYearsLoaded] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null); // Reference for the load more trigger
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  const loadMoreYears = () => {
+    setLoading(true);
+    setTimeout(() => {
+      const remainingYears = Object.keys(groupedList).slice(
+        visibleYears.length,
+        visibleYears.length + 4,
+      );
+
+      if (remainingYears.length === 0) {
+        setAllYearsLoaded(true); // No more years to load
+      }
+
+      setVisibleYears((prev) => [...prev, ...remainingYears]);
+      setLoading(false);
+    }, 500); // Simulate a network delay
+  };
+
+  useEffect(() => {
+    // Initial load of the first 4 years
+    setVisibleYears(Object.keys(groupedList).slice(0, 4));
+  }, [groupedList]);
+
+  useEffect(() => {
+    // Intersection observer to trigger loading when scrolled to the bottom
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsAtBottom(true);
+        } else {
+          setIsAtBottom(false);
+        }
+      },
+      {
+        rootMargin: '0px',
+        threshold: 1.0, // Trigger when the element is fully visible
+      },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Trigger load more years when scrolled to bottom and not already loading
+    if (isAtBottom && !loading && !allYearsLoaded) {
+      loadMoreYears();
+    }
+  }, [isAtBottom, loading, allYearsLoaded]);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {visibleYears.map((year) => (
+        <Suspense key={year} fallback={<div>Loading year {year}...</div>}>
+          <RenderYear year={year} listofItems={groupedList[year]} />
+        </Suspense>
+      ))}
+      {loading && !allYearsLoaded ? (
+        <div className="text-center mt-4">Loading more years...</div>
+      ) : (
+        <div ref={loadMoreRef} className="h-2"></div> // Invisible trigger element at the bottom
+      )}
+    </div>
+  );
+};
 
 export { DragDropMessages };
