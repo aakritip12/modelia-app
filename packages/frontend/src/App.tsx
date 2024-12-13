@@ -1,11 +1,14 @@
 import React from 'react';
 
+import {ErrorBoundary} from './commonComponents'
 import { MessageList } from './pages';
 import Logo from './assets/logo.svg';
 import Modelia from './assets/modelia.svg';
+
 import './index.css'; // Custom CSS for styling
 
 const App: React.FC = () => (
+  <ErrorBoundary>
   <div>
     <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
       <div className="w-[108rem] flex-none flex ">
@@ -57,6 +60,7 @@ const App: React.FC = () => (
     </div>
     <MessageList />
   </div>
+  </ErrorBoundary>
 );
 
 export default App;
