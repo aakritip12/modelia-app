@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import './DragDrop.css'; // Add animation styles here
+import './DragDrop.css';
 
 interface BaseTile {
   isNew?: boolean; // Make it optional if not all items have this property
@@ -10,7 +10,7 @@ interface DragDropProps<T extends BaseTile> {
   groupId: string | null;
 }
 
-const DragDrop = <T extends BaseTile,>({
+const DragDrop = <T extends BaseTile>({
   listofItems,
   renderTiles,
   groupId,
@@ -69,7 +69,7 @@ const DragDrop = <T extends BaseTile,>({
           draggable
           onDragStart={() => handleDragStart(index)}
           onDragOver={(e) => {
-            e.preventDefault(); // Prevent default to allow drop
+            e.preventDefault();
             handleDragOver(index);
           }}
           onDrop={() => handleDrop(index)}

@@ -21,11 +21,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     };
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    // Update state to show fallback UI
-    return { hasError: true, error, errorInfo: null };
-  }
-
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log the error to an error monitoring service or console
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
@@ -54,9 +49,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               />
 
               {/* Error Message */}
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">Oops! Something went wrong.</h2>
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
+                Oops! Something went wrong.
+              </h2>
               <p className="text-center text-gray-500 mb-6">
-                Our Nostradamus are looking at the issue. Please try again later.
+                Our Nostradamus are looking at the issue. Please try again
+                later.
               </p>
 
               {/* Error Details */}
@@ -83,4 +81,4 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 }
 
-export  {ErrorBoundary};
+export { ErrorBoundary };

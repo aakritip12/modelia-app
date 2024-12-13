@@ -15,7 +15,7 @@ const AddTileForm = ({ onClose }: { onClose: (data?: Message) => void }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // Validation
+    // Form Validation
     let isValid = true;
     const newErrors = { date: '', message: '' };
 

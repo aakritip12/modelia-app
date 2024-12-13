@@ -25,10 +25,10 @@ const config: Config = {
       },
       keyframes: {
         colorChange: {
-          '0%': { backgroundColor: '#36BA98' }, 
-          '100%': { backgroundColor: '#ffffff' }, 
+          '0%': { backgroundColor: '#36BA98' },
+          '100%': { backgroundColor: '#ffffff' },
         },
-      }
+      },
     },
   },
   plugins: [],

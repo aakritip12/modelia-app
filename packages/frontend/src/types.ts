@@ -1,7 +1,7 @@
 type Message = {
   date: string;
   message: string;
-  isNew?: boolean
+  isNew?: boolean;
 };
 
 export type { Message };

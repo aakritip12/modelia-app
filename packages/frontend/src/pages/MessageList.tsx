@@ -35,17 +35,17 @@ const MessageList = () => {
 
   const handleNewTileSubmit = (formInput?: Message) => {
     if (formInput !== undefined) {
-      const newList = [...messageList, {...formInput, isNew: true}];
-      setMessageList(newList); // Update the message list
-      const groupedList = groupByYear(newList, isSorted); // Group messages by year
-      setOrderedList(groupedList); // Update ordered list
+      const newList = [...messageList, { ...formInput, isNew: true }];
+      setMessageList(newList);
+      const groupedList = groupByYear(newList, isSorted);
+      setOrderedList(groupedList);
     }
     close();
   };
 
   const orderList = (shouldSort: boolean) => {
     setIsSorted(shouldSort);
-    const tempList = messageList.map((msg) => ( { ...msg, isNew: false }));
+    const tempList = messageList.map((msg) => ({ ...msg, isNew: false }));
     setMessageList(tempList);
     const groupedList = groupByYear(tempList, shouldSort);
     setOrderedList(groupedList);
@@ -69,7 +69,7 @@ const MessageList = () => {
 
   useEffect(() => {
     fetchMessages();
-  }, []); // This will run only once when the component mounts
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
