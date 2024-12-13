@@ -90,11 +90,7 @@ const MessageList = () => {
         </button>
         <button
           className={`bg-pink-light text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-magenta-light hover:border-magenta-light active:magenta-light focus:outline-none transition duration-300 border-b-4
-            ${
-              !isSorted
-                ? 'border-magenta-light'
-                : 'border-pink-light'
-            }
+            ${!isSorted ? 'border-magenta-light' : 'border-pink-light'}
             `}
           onClick={() => orderList(false)}
         >
@@ -102,11 +98,7 @@ const MessageList = () => {
         </button>
         <button
           className={`bg-pink-light text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-magenta-light hover:border-magenta-light active:magenta-light focus:outline-none focus:magenta-light transition duration-300 border-b-4
-            ${
-              isSorted
-                ? 'border-magenta-light'
-                : 'border-pink-light'
-            }`}
+            ${isSorted ? 'border-magenta-light' : 'border-pink-light'}`}
           onClick={() => orderList(true)}
         >
           Sorted Order

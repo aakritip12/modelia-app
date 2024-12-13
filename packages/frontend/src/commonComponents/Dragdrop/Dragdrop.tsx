@@ -5,10 +5,14 @@ import './DragDrop.css'; // Add animation styles here
 interface DragDropProps<T> {
   listofItems: T[];
   renderTiles: (item: T) => ReactNode;
-  groupId: string |null;
+  groupId: string | null;
 }
 
-const DragDrop = <T,>({ listofItems, renderTiles, groupId }: DragDropProps<T>) => {
+const DragDrop = <T,>({
+  listofItems,
+  renderTiles,
+  groupId,
+}: DragDropProps<T>) => {
   const [tiles, setTiles] = useState<T[]>([]);
   const [draggedTile, setDraggedTile] = useState<number | null>(null);
   const [droppedTileIndex, setDroppedTileIndex] = useState<number | null>(null);
