@@ -1,6 +1,6 @@
 This project is based on node v22.11.0
 
-# To Prettify the frontend project in one go us
+# To Prettify the frontend project in one go use
 ```
   cd ./packages/frontend
   yarn prettier --write .
