@@ -1,14 +1,16 @@
 import { ReactNode, useEffect, useState } from 'react';
 import './DragDrop.css'; // Add animation styles here
 
-// Define the generic type for the DragDrop component
-interface DragDropProps<T> {
+interface BaseTile {
+  isNew?: boolean; // Make it optional if not all items have this property
+}
+interface DragDropProps<T extends BaseTile> {
   listofItems: T[];
   renderTiles: (item: T) => ReactNode;
   groupId: string | null;
 }
 
-const DragDrop = <T,>({
+const DragDrop = <T extends BaseTile,>({
   listofItems,
   renderTiles,
   groupId,
@@ -45,13 +47,23 @@ const DragDrop = <T,>({
     setTiles(listofItems);
   }, [listofItems]);
 
+  const getBackgroundClass = (tile: T, index: number): string => {
+    if (droppedTileIndex === index && draggedGroup === groupId) {
+      return 'bg-green-100 animate-bounce';
+    }
+    if (tile.isNew) {
+      return 'animate-color-change';
+    }
+    return 'bg-white';
+  };
+
   return (
     <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 gap-4">
       {tiles.map((tile, index) => (
         <div
           key={index}
           className={`p-3 shadow-md rounded-md border border-gray-200 hover:shadow-lg transition-transform duration-300 ease-in-out cursor-pointer
-            ${droppedTileIndex === index && draggedGroup === groupId ? 'bg-green-100 animate-bounce' : 'bg-white'}
+            ${getBackgroundClass(tile, index)}
             ${draggedTile === index ? 'scale-105' : ''}
             `}
           draggable

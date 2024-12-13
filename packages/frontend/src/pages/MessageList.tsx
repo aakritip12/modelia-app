@@ -35,9 +35,9 @@ const MessageList = () => {
 
   const handleNewTileSubmit = (formInput?: Message) => {
     if (formInput !== undefined) {
-      const newList = [...messageList, formInput];
+      const newList = [...messageList, {...formInput, isNew: true}];
       setMessageList(newList); // Update the message list
-      const groupedList = groupByYear(newList, false); // Group messages by year
+      const groupedList = groupByYear(newList, isSorted); // Group messages by year
       setOrderedList(groupedList); // Update ordered list
     }
     close();
@@ -45,7 +45,9 @@ const MessageList = () => {
 
   const orderList = (shouldSort: boolean) => {
     setIsSorted(shouldSort);
-    const groupedList = groupByYear(messageList, shouldSort);
+    const tempList = messageList.map((msg) => ( { ...msg, isNew: false }));
+    setMessageList(tempList);
+    const groupedList = groupByYear(tempList, shouldSort);
     setOrderedList(groupedList);
   };
 

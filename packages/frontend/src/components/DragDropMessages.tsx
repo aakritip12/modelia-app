@@ -16,18 +16,20 @@ const DragDropMessages = ({
 }: {
   groupedList: Record<string, Message[]>;
 }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
     {Object.keys(groupedList).map((year) => (
       <div
         key={year}
         className="flex-1 min-w-[300px] bg-purple-light rounded-lg shadow-lg p-4"
       >
         <h2 className="text-xl font-semibold mb-4">{year}</h2>
+        <div className="max-h-[300px] overflow-y-auto">
         <DragDrop
           listofItems={groupedList[year]}
           renderTiles={renderComponent}
           groupId={`${year}`}
         />
+        </div>
       </div>
     ))}
   </div>

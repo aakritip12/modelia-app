@@ -20,6 +20,15 @@ const config: Config = {
   theme: {
     extend: {
       colors,
+      animation: {
+        'color-change': 'colorChange 3s forwards',
+      },
+      keyframes: {
+        colorChange: {
+          '0%': { backgroundColor: '#36BA98' }, 
+          '100%': { backgroundColor: '#ffffff' }, 
+        },
+      }
     },
   },
   plugins: [],
